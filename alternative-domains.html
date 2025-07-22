@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Варианты доменов для АскНН</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #ff6b35;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .domain-category {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ff6b35;
+        }
+        .domain-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .domain-item:hover {
+            background: rgba(255, 107, 53, 0.2);
+            transform: translateX(5px);
+        }
+        .domain-name {
+            font-weight: bold;
+            color: #ff8c42;
+        }
+        .domain-desc {
+            color: #cccccc;
+            font-size: 0.9rem;
+        }
+        .current {
+            border: 2px solid #32cd32;
+            background: rgba(50, 205, 50, 0.1);
+        }
+        .current .domain-name {
+            color: #32cd32;
+        }
+        .back-btn {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b35, #ff8c42);
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+        }
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 ВАРИАНТЫ ДОМЕНОВ ДЛЯ АскНН</h1>
+        
+        <div class="domain-category">
+            <h3>🇷🇺 Российские домены</h3>
+            <div class="domain-item">
+                <span class="domain-name">asknn.ru</span>
+                <span class="domain-desc">Классический российский домен</span>
+            </div>
+            <div class="domain-item current">
+                <span class="domain-name">asknn.su</span>
+                <span class="domain-desc">СССР домен - идеально для панк-культуры! ⭐</span>
+            </div>
+            <div class="domain-item">
+                <span class="domain-name">asknn.рф</span>
+                <span class="domain-desc">Кириллический российский домен</span>
+            </div>
+        </div>
+
+        <div class="domain-category">
+            <h3>🌍 Международные домены</h3>
+            <div class="domain-item">
+                <span class="domain-name">asknn.com</span>
+                <span class="domain-desc">Самый популярный международный</span>
+            </div>
+            <div class="domain-item">
+                <span class="domain-name">asknn.net</span>
+                <span class="domain-desc">Для сетевых проектов</span>
+            </div>
+            <div class="domain-item">
+                <span class="domain-name">asknn.org</span>
+                <span class="domain-desc">Для организаций и сообществ</span>
+            </div>
+        </div>
+
+        <div class="domain-category">
+            <h3>🎸 Тематические домены</h3>
+            <div class="domain-item">
+                <span class="domain-name">asknn.club</span>
+                <span class="domain-desc">Для субкультурных клубов</span>
+            </div>
+            <div class="domain-item">
+                <span class="domain-name">asknn.band</span>
+                <span class="domain-desc">Музыкальная тематика</span>
+            </div>
+            <div class="domain-item">
+                <span class="domain-name">asknn.rocks</span>
+                <span class="domain-desc">Рок-музыка</span>
+            </div>
+            <div class="domain-item">
+                <span class="domain-name">asknn.punk</span>
+                <span class="domain-desc">Прямо в тему! 🤘</span>
+            </div>
+        </div>
+
+        <div class="domain-category">
+            <h3>🤘 Креативные варианты</h3>
+            <div class="domain-item">
+                <span class="domain-name">asknn.black</span>
+                <span class="domain-desc">Готика и дарк-культура</span>
+            </div>
+            <div class="domain-item">
+                <span class="domain-name">asknn.red</span>
+                <span class="domain-desc">Панк и революция</span>
+            </div>
+            <div class="domain-item">
+                <span class="domain-name">asknn.me</span>
+                <span class="domain-desc">Персональный стиль</span>
+            </div>
+        </div>
+
+        <a href="index.html" class="back-btn">← Вернуться на сайт АскНН</a>
+    </div>
+</body>
+</html>
