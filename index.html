@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>АскНН - Аскера Нижний Новгород</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1>АскНН</h1>
+                <p>Аскера Нижний Новгород</p>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h2>Добро пожаловать в мир субкультур</h2>
+                <p>Панки, Скинхеды, Эмо, Гранж и многое другое</p>
+            </div>
+        </section>
+
+        <section class="gallery">
+            <div class="container">
+                <h3>Галерея субкультур</h3>
+                <div class="image-grid">
+                    <div class="image-card">
+                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop" alt="Панки">
+                        <h4>Панки</h4>
+                    </div>
+                    <div class="image-card">
+                        <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=300&h=300&fit=crop" alt="Скинхеды">
+                        <h4>Скинхеды</h4>
+                    </div>
+                    <div class="image-card">
+                        <img src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=300&h=300&fit=crop" alt="Эмо">
+                        <h4>Эмо</h4>
+                    </div>
+                    <div class="image-card">
+                        <img src="https://images.unsplash.com/photo-1598387993441-a364f854c3e1?w=300&h=300&fit=crop" alt="Гранж">
+                        <h4>Гранж</h4>
+                    </div>
+                    <div class="image-card">
+                        <img src="https://images.unsplash.com/photo-1574391884720-bbc2f7945bcd?w=300&h=300&fit=crop" alt="Готы">
+                        <h4>Готы</h4>
+                    </div>
+                    <div class="image-card">
+                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop" alt="Металхеды">
+                        <h4>Металхеды</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="buttons">
+            <div class="container">
+                <h3>Полезные ссылки</h3>
+                <div class="button-grid">
+                    <button class="action-btn tg-btn" onclick="openTelegram()">
+                        <span class="btn-icon">📱</span>
+                        Тг чат
+                    </button>
+                    <button class="action-btn cigarettes-btn" onclick="openCigarettes()">
+                        <span class="btn-icon">🚬</span>
+                        Купить сигареты
+                    </button>
+                    <button class="action-btn beer-btn" onclick="openBeer()">
+                        <span class="btn-icon">🍺</span>
+                        Купить пиво
+                    </button>
+                    <button class="action-btn donation-btn" onclick="openDonation()">
+                        <span class="btn-icon">💰</span>
+                        На развитие сайта
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 АскНН - Аскера Нижний Новгород. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
