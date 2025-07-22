@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>АскНН - Аскера Нижний Новгород</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Информационный блок */
+        .site-info {
+            background: linear-gradient(90deg, #ff6b35, #f7931e);
+            padding: 10px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(255, 107, 53, 0.3);
+        }
+
+        .site-info p {
+            margin: 0;
+            font-weight: 500;
+            color: #fff;
+        }
+
+        .site-link {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 2px 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .site-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Навигация */
+        .navbar {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 1rem 0;
+            box-shadow: 0 2px 20px rgba(255, 107, 53, 0.3);
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand h1 {
+            color: #ff6b35;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-brand p {
+            color: #cccccc;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        /* Музыкальный плеер */
+        .music-player {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .music-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .music-btn {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .music-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .music-btn.playing {
+            animation: musicPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes musicPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .music-info {
+            flex: 1;
+            color: #fff;
+        }
+
+        .track-title {
+            font-weight: bold;
+            color: #ff6b35;
+            margin-bottom: 5px;
+        }
+
+        .track-artist {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .volume-slider {
+            width: 100px;
+            height: 5px;
+            background: #333;
+            outline: none;
+            border-radius: 5px;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            background: #ff6b35;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Playlist */
+        .playlist {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .playlist h3 {
+            color: #ff6b35;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .track-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .track-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .track-item:hover {
+            background: rgba(255, 107, 53, 0.2);
+            transform: translateX(5px);
+        }
+
+        .track-item.active {
+            background: rgba(255, 107, 53, 0.3);
+            border-left: 3px solid #ff6b35;
+        }
+
+        /* Герой секция */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7));
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: #cccccc;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Галерея */
+        .gallery, .buttons {
+            padding: 4rem 0;
+        }
+
+        .gallery h3, .buttons h3 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #ff6b35;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .image-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .image-card:hover {
+            transform: translateY(-10px);
+            border-color: #ff6b35;
+            box-shadow: 0 15px 35px rgba(255, 107, 53, 0.3);
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .image-card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #ff6b35;
+        }
+
+        .image-card p {
+            color: #cccccc;
+        }
+
+        /* Кнопки */
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .action-btn {
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            border: none;
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 107, 53, 0.5);
+        }
+
+        .btn-icon {
+            font-size: 1.5rem;
+        }
+
+        /* Футер */
+        footer {
+            background: rgba(0, 0, 0, 0.9);
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 4rem;
+            border-top: 2px solid #ff6b35;
+        }
+
+        footer p {
+            color: #cccccc;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .hero h2 { font-size: 2rem; }
+            .nav-brand h1 { font-size: 2rem; }
+            .image-grid, .button-grid { grid-template-columns: 1fr; }
+            .music-player { flex-direction: column; text-align: center; }
+            .volume-control { margin-top: 10px; }
+        }
+
+        @media (max-width: 480px) {
+            .hero h2 { font-size: 1.8rem; }
+            .music-btn { padding: 8px 12px; font-size: 0.8rem; }
+        }
+
+        /* Эквалайзер */
+        .music-visualizer {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 30px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .music-visualizer.active {
+            opacity: 1;
+        }
+
+        .equalizer-bar {
+            width: 3px;
+            background: linear-gradient(to top, #ff6b35, #ff8c42);
+            border-radius: 2px;
+            animation: equalizerBounce 0.8s ease-in-out infinite alternate;
+        }
+
+        .equalizer-bar:nth-child(1) { animation-delay: 0s; height: 10px; }
+        .equalizer-bar:nth-child(2) { animation-delay: 0.1s; height: 20px; }
+        .equalizer-bar:nth-child(3) { animation-delay: 0.2s; height: 15px; }
+        .equalizer-bar:nth-child(4) { animation-delay: 0.3s; height: 25px; }
+        .equalizer-bar:nth-child(5) { animation-delay: 0.4s; height: 18px; }
+
+        @keyframes equalizerBounce {
+            from { height: 5px; }
+            to { height: var(--bar-height, 25px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Скрытый аудио элемент -->
+    <audio id="backgroundMusic" preload="auto" loop>
+        <!-- Источники будут добавлены динамически -->
+    </audio>
+
+    <!-- Эквалайзер -->
+    <div class="music-visualizer" id="musicVisualizer">
+        <div class="equalizer-bar"></div>
+        <div class="equalizer-bar"></div>
+        <div class="equalizer-bar"></div>
+        <div class="equalizer-bar"></div>
+        <div class="equalizer-bar"></div>
+    </div>
+
+    <!-- Информация о сайте -->
+    <div class="site-info">
+        <div class="container">
+            <p>🌐 Сайт доступен по адресу: <a href="#" class="site-link">asknn.netlify.app</a></p>
+        </div>
+    </div>
+
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1>АскНН</h1>
+                    <p>Аскера Нижний Новгород</p>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Музыкальный плеер -->
+        <section class="container">
+            <div class="music-player">
+                <div class="music-controls">
+                    <button id="playPauseBtn" class="music-btn" onclick="toggleMusic()">
+                        <span id="playPauseIcon">▶️</span>
+                        <span id="playPauseText">ИГРАТЬ</span>
+                    </button>
+                    <button class="music-btn" onclick="previousTrack()">⏮️</button>
+                    <button class="music-btn" onclick="nextTrack()">⏭️</button>
+                </div>
+                <div class="music-info">
+                    <div class="track-title" id="trackTitle">Выберите трек</div>
+                    <div class="track-artist" id="trackArtist">АскНН Плейлист</div>
+                </div>
+                <div class="volume-control">
+                    <span>🔊</span>
+                    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="70" onchange="changeVolume()">
+                </div>
+            </div>
+
+            <!-- Плейлист -->
+            <div class="playlist">
+                <h3>🎸 Панк Плейлист АскНН</h3>
+                <div class="track-list" id="trackList">
+                    <!-- Треки будут добавлены динамически -->
+                </div>
+            </div>
+        </section>
+
+        <section class="hero">
+            <div class="container">
+                <h2>Добро пожаловать в мир субкультур</h2>
+                <p>Место, где встречаются панки, эмо, готы и все те, кто не боится быть собой</p>
+            </div>
+        </section>
+
+        <section class="gallery">
+            <div class="container">
+                <h3>Наши субкультуры</h3>
+                <div class="image-grid">
+                    <div class="image-card">
+                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=300&fit=crop" alt="Панки">
+                        <h4>Панки</h4>
+                        <p>Бунт против системы</p>
+                    </div>
+                    <div class="image-card">
+                        <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&h=300&fit=crop" alt="Эмо">
+                        <h4>Эмо</h4>
+                        <p>Эмоциональная глубина</p>
+                    </div>
+                    <div class="image-card">
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop" alt="Готы">
+                        <h4>Готы</h4>
+                        <p>Темная романтика</p>
+                    </div>
+                    <div class="image-card">
+                        <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=300&fit=crop" alt="Металхеды">
+                        <h4>Металхеды</h4>
+                        <p>Сила металла</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="buttons">
+            <div class="container">
+                <h3>Полезные ссылки</h3>
+                <div class="button-grid">
+                    <button class="action-btn" onclick="openTelegram()">
+                        <span class="btn-icon">💬</span>
+                        Тг чат
+                    </button>
+                    <button class="action-btn" onclick="openCigarettes()">
+                        <span class="btn-icon">🚬</span>
+                        Купить сигареты
+                    </button>
+                    <button class="action-btn" onclick="openBeer()">
+                        <span class="btn-icon">🍺</span>
+                        Купить пиво
+                    </button>
+                    <button class="action-btn" onclick="openDonation()">
+                        <span class="btn-icon">💰</span>
+                        На развитие сайта
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 АскНН - Аскера Нижний Новгород. Все права защищены.</p>
+            <p>Сделано с 🤘 для панк-сообщества</p>
+        </div>
+    </footer>
+
+    <script>
+        // Функции для кнопок
+        function openTelegram() {
+            window.open('https://t.me/mixyesosii', '_blank');
+        }
+
+        function openCigarettes() {
+            window.open('https://www.ozon.ru/search/?text=сигареты', '_blank');
+        }
+
+        function openBeer() {
+            window.open('https://www.perekrestok.ru/cat/alkogol/', '_blank');
+        }
+
+        function openDonation() {
+            window.open('https://www.donationalerts.com/r/sasavotik', '_blank');
+        }
+
+        // Плейлист с бесплатной панк музыкой
+        const playlist = [
+            {
+                title: "Punk Rock Anthem",
+                artist: "Free Music Archive",
+                url: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/The_Freak_Fandango_Orchestra/Tales_of_a_Dead_Fish/The_Freak_Fandango_Orchestra_-_01_-_Punk_Rock_Anthem.mp3"
+            },
+            {
+                title: "Rebellion",
+                artist: "CC Commons",
+                url: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/Creative_Commons/The_Freak_Fandango_Orchestra/Tales_of_a_Dead_Fish/The_Freak_Fandango_Orchestra_-_02_-_Rebellion.mp3"
+            },
+            {
+                title: "Underground",
+                artist: "Free Audio",
+                url: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/The_Freak_Fandango_Orchestra/Tales_of_a_Dead_Fish/The_Freak_Fandango_Orchestra_-_03_-_Underground.mp3"
+            },
+            {
+                title: "Anarchy in the Street",
+                artist: "Open Source Music",
+                url: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/Creative_Commons/The_Freak_Fandango_Orchestra/Tales_of_a_Dead_Fish/The_Freak_Fandango_Orchestra_-_04_-_Anarchy_in_the_Street.mp3"
+            },
+            {
+                title: "Punk Spirit",
+                artist: "CC Music",
+                url: "https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/The_Freak_Fandango_Orchestra/Tales_of_a_Dead_Fish/The_Freak_Fandango_Orchestra_-_05_-_Punk_Spirit.mp3"
+            }
+        ];
+
+        // Альтернативные источники (если основные не работают)
+        const fallbackTracks = [
+            {
+                title: "Энергичный Рок",
+                artist: "Royalty Free",
+                url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" // Заглушка
+            },
+            {
+                title: "Панк Энергия",
+                artist: "Creative Commons",
+                url: "https://www.zapsplat.com" // Пример источника
+            }
+        ];
+
+        let currentTrackIndex = 0;
+        let isPlaying = false;
+        let audioElement = document.getElementById('backgroundMusic');
+
+        // Инициализация плейлиста
+        function initPlaylist() {
+            const trackList = document.getElementById('trackList');
+            
+            playlist.forEach((track, index) => {
+                const trackItem = document.createElement('div');
+                trackItem.className = 'track-item';
+                trackItem.innerHTML = `
+                    <div>
+                        <div style="font-weight: bold;">${track.title}</div>
+                        <div style="font-size: 0.8rem; color: #ccc;">${track.artist}</div>
+                    </div>
+                    <div style="color: #ff6b35;">🎵</div>
+                `;
+                trackItem.onclick = () => playTrack(index);
+                trackList.appendChild(trackItem);
+            });
+
+            // Загружаем первый трек
+            loadTrack(0);
+        }
+
+        // Загрузка трека
+        function loadTrack(index) {
+            if (index >= 0 && index < playlist.length) {
+                const track = playlist[index];
+                audioElement.src = track.url;
+                
+                document.getElementById('trackTitle').textContent = track.title;
+                document.getElementById('trackArtist').textContent = track.artist;
+                
+                // Обновляем активный трек в списке
+                document.querySelectorAll('.track-item').forEach((item, i) => {
+                    item.classList.toggle('active', i === index);
+                });
+                
+                currentTrackIndex = index;
+            }
+        }
+
+        // Воспроизведение трека
+        function playTrack(index) {
+            loadTrack(index);
+            if (!isPlaying) {
+                toggleMusic();
+            }
+        }
+
+        // Переключение воспроизведения
+        function toggleMusic() {
+            const playPauseBtn = document.getElementById('playPauseBtn');
+            const playPauseIcon = document.getElementById('playPauseIcon');
+            const playPauseText = document.getElementById('playPauseText');
+            const visualizer = document.getElementById('musicVisualizer');
+
+            if (!isPlaying) {
+                audioElement.play().then(() => {
+                    isPlaying = true;
+                    playPauseBtn.classList.add('playing');
+                    playPauseIcon.textContent = '⏸️';
+                    playPauseText.textContent = 'ПАУЗА';
+                    visualizer.classList.add('active');
+                }).catch(error => {
+                    console.log('Ошибка воспроизведения:', error);
+                    playPauseIcon.textContent = '❌';
+                    playPauseText.textContent = 'ОШИБКА';
+                });
+            } else {
+                audioElement.pause();
+                isPlaying = false;
+                playPauseBtn.classList.remove('playing');
+                playPauseIcon.textContent = '▶️';
+                playPauseText.textContent = 'ИГРАТЬ';
+                visualizer.classList.remove('active');
+            }
+        }
+
+        // Предыдущий трек
+        function previousTrack() {
+            const newIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+            playTrack(newIndex);
+        }
+
+        // Следующий трек
+        function nextTrack() {
+            const newIndex = (currentTrackIndex + 1) % playlist.length;
+            playTrack(newIndex);
+        }
+
+        // Изменение громкости
+        function changeVolume() {
+            const volume = document.getElementById('volumeSlider').value / 100;
+            audioElement.volume = volume;
+        }
+
+        // Автопереход к следующему треку
+        audioElement.addEventListener('ended', () => {
+            nextTrack();
+        });
+
+        // Обработка ошибок загрузки
+        audioElement.addEventListener('error', () => {
+            console.log('Ошибка загрузки трека:', playlist[currentTrackIndex].title);
+            // Пробуем следующий трек
+            nextTrack();
+        });
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            initPlaylist();
+            changeVolume(); // Устанавливаем начальную громкость
+            
+            // Автозапуск через 2 секунды
+            setTimeout(() => {
+                if (!isPlaying) {
+                    toggleMusic();
+                }
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
