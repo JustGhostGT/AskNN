@@ -8,6 +8,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Аудио плеер с панк музыкой -->
+    <audio id="backgroundMusic" loop preload="auto">
+        <!-- Будем использовать Web Audio API для генерации панк музыки -->
+    </audio>
+
+    <!-- Визуальный эквалайзер -->
+    <div class="music-visualizer" id="musicVisualizer">
+        <div class="equalizer-bar"></div>
+        <div class="equalizer-bar"></div>
+        <div class="equalizer-bar"></div>
+        <div class="equalizer-bar"></div>
+        <div class="equalizer-bar"></div>
+    </div>
+
     <!-- Информационный блок с ссылкой на сайт -->
     <div class="site-info">
         <div class="container">
@@ -17,9 +31,18 @@
 
     <header>
         <nav class="navbar">
-            <div class="nav-brand">
-                <h1>АскНН</h1>
-                <p>Аскера Нижний Новгород</p>
+            <div class="container">
+                <div class="nav-brand">
+                    <h1>АскНН</h1>
+                    <p>Аскера Нижний Новгород</p>
+                </div>
+                <!-- Кнопка управления музыкой -->
+                <div class="music-control">
+                    <button id="musicToggle" class="music-btn" onclick="toggleMusic()" title="Выключить музыку">
+                        <span id="musicIcon">🔊</span>
+                        <span id="musicText">МУЗЫКА ВКЛ</span>
+                    </button>
+                </div>
             </div>
         </nav>
     </header>
