@@ -44,6 +44,13 @@ const musicPlaylist = [
         tempo: 130,
         style: "emotional"
     },
+    { 
+        title: "Break", 
+        artist: "Three Days Grace",
+        genre: "alternative rock",
+        tempo: 125,
+        style: "intense"
+    },
     // Nirvana
     { 
         title: "Smells Like Teen Spirit", 
@@ -65,6 +72,13 @@ const musicPlaylist = [
         genre: "grunge",
         tempo: 125,
         style: "dynamic"
+    },
+    { 
+        title: "In Bloom", 
+        artist: "Nirvana",
+        genre: "grunge",
+        tempo: 130,
+        style: "raw"
     },
     // Green Day
     { 
@@ -88,6 +102,13 @@ const musicPlaylist = [
         tempo: 185,
         style: "political"
     },
+    { 
+        title: "Holiday", 
+        artist: "Green Day",
+        genre: "punk rock",
+        tempo: 150,
+        style: "rebellious"
+    },
     // XDEBUSTERVANDAMX
     { 
         title: "HARDCORE DESTRUCTION", 
@@ -103,6 +124,13 @@ const musicPlaylist = [
         tempo: 175,
         style: "underground"
     },
+    { 
+        title: "CHAOS MACHINE", 
+        artist: "XDEBUSTERVANDAMX",
+        genre: "hardcore",
+        tempo: 190,
+        style: "extreme"
+    },
     // BEATDOWNHEROES
     { 
         title: "STREET FIGHT", 
@@ -117,6 +145,13 @@ const musicPlaylist = [
         genre: "hardcore",
         tempo: 165,
         style: "motivational"
+    },
+    { 
+        title: "WARRIOR SPIRIT", 
+        artist: "BEATDOWNHEROES",
+        genre: "hardcore",
+        tempo: 175,
+        style: "powerful"
     }
 ];
 
@@ -126,6 +161,7 @@ let audioContext;
 let currentOscillators = [];
 let currentGain;
 let animationFrameId;
+let trackTimeoutId;
 
 // Функция для управления фоновой музыкой
 function toggleMusic() {
@@ -204,12 +240,12 @@ function playCurrentTrack() {
     // Обновляем информацию о треке
     updateTrackInfo(track);
     
-    // Автоматически переключаем на следующий трек через 30 секунд
-    setTimeout(() => {
+    // Автоматически переключаем на следующий трек через 25 секунд
+    trackTimeoutId = setTimeout(() => {
         if (isPlaying) {
             nextTrack();
         }
-    }, 30000);
+    }, 25000);
 }
 
 // Функция для перехода к следующему треку
@@ -231,184 +267,6 @@ function updateTrackInfo(track) {
     console.log(`🎵 Сейчас играет: ${track.artist} - ${track.title} (${track.genre})`);
 }
 
-// Создание панк-рок трека с помощью Web Audio API
-function createPunkTrack() {
-    if (!audioContext) {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    
-    // Создаем барабанный ритм
-    function playDrums() {
-        const drumGain = audioContext.createGain();
-        drumGain.connect(audioContext.destination);
-        drumGain.gain.value = 0.3;
-        
-        function kickDrum() {
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            
-            osc.connect(gain);
-            gain.connect(drumGain);
-            
-            osc.frequency.setValueAtTime(60, audioContext.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(20, audioContext.currentTime + 0.1);
-            
-            gain.gain.setValueAtTime(0.5, audioContext.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-            
-            osc.start(audioContext.currentTime);
-            osc.stop(audioContext.currentTime + 0.1);
-        }
-        
-        function snare() {
-            const noise = audioContext.createBufferSource();
-            const noiseBuffer = audioContext.createBuffer(1, audioContext.sampleRate * 0.1, audioContext.sampleRate);
-            const data = noiseBuffer.getChannelData(0);
-            
-            for (let i = 0; i < data.length; i++) {
-                data[i] = Math.random() * 2 - 1;
-            }
-            
-            noise.buffer = noiseBuffer;
-            
-            const snareGain = audioContext.createGain();
-            noise.connect(snareGain);
-            snareGain.connect(drumGain);
-            
-            snareGain.gain.setValueAtTime(0.2, audioContext.currentTime);
-            snareGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-            
-            noise.start(audioContext.currentTime);
-        }
-        
-        // Панк ритм: бочка на 1 и 3, снейр на 2 и 4
-        function drumLoop() {
-            if (!isPlaying) return;
-            
-            kickDrum(); // Бочка на 1
-            setTimeout(() => {
-                if (isPlaying) snare(); // Снейр на 2
-            }, 250);
-            setTimeout(() => {
-                if (isPlaying) kickDrum(); // Бочка на 3
-            }, 500);
-            setTimeout(() => {
-                if (isPlaying) snare(); // Снейр на 4
-            }, 750);
-            
-            setTimeout(drumLoop, 1000); // Повтор каждую секунду
-        }
-        
-        drumLoop();
-    }
-    
-    // Создаем басовую линию
-    function playBass() {
-        const bassGain = audioContext.createGain();
-        bassGain.connect(audioContext.destination);
-        bassGain.gain.value = 0.2;
-        
-        function bassNote(freq, duration) {
-            const osc = audioContext.createOscillator();
-            const gain = audioContext.createGain();
-            
-            osc.connect(gain);
-            gain.connect(bassGain);
-            
-            osc.frequency.value = freq;
-            osc.type = 'square';
-            
-            gain.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-            
-            osc.start(audioContext.currentTime);
-            osc.stop(audioContext.currentTime + duration);
-        }
-        
-        function bassLoop() {
-            if (!isPlaying) return;
-            
-            bassNote(82.41, 0.5);  // E2
-            setTimeout(() => {
-                if (isPlaying) bassNote(87.31, 0.5);  // F2
-            }, 500);
-            setTimeout(() => {
-                if (isPlaying) bassNote(98.00, 0.5);  // G2
-            }, 1000);
-            setTimeout(() => {
-                if (isPlaying) bassNote(82.41, 0.5);  // E2
-            }, 1500);
-            
-            setTimeout(bassLoop, 2000);
-        }
-        
-        bassLoop();
-    }
-    
-    // Создаем гитарные аккорды
-    function playGuitar() {
-        const guitarGain = audioContext.createGain();
-        guitarGain.connect(audioContext.destination);
-        guitarGain.gain.value = 0.15;
-        
-        function powerChord(freq1, freq2, duration) {
-            [freq1, freq2].forEach(freq => {
-                const osc = audioContext.createOscillator();
-                const gain = audioContext.createGain();
-                const distortion = audioContext.createWaveShaper();
-                
-                // Создаем эффект дисторшна
-                const samples = 44100;
-                const curve = new Float32Array(samples);
-                const deg = Math.PI / 180;
-                for (let i = 0; i < samples; i++) {
-                    const x = (i * 2) / samples - 1;
-                    curve[i] = ((3 + 20) * x * 20 * deg) / (Math.PI + 20 * Math.abs(x));
-                }
-                distortion.curve = curve;
-                distortion.oversample = '4x';
-                
-                osc.connect(distortion);
-                distortion.connect(gain);
-                gain.connect(guitarGain);
-                
-                osc.frequency.value = freq;
-                osc.type = 'square';
-                
-                gain.gain.setValueAtTime(0.1, audioContext.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-                
-                osc.start(audioContext.currentTime);
-                osc.stop(audioContext.currentTime + duration);
-            });
-        }
-        
-        function guitarLoop() {
-            if (!isPlaying) return;
-            
-            powerChord(164.81, 207.65, 0.8);  // E5
-            setTimeout(() => {
-                if (isPlaying) powerChord(174.61, 220.00, 0.8);  // F5
-            }, 1000);
-            setTimeout(() => {
-                if (isPlaying) powerChord(196.00, 246.94, 0.8);  // G5
-            }, 2000);
-            setTimeout(() => {
-                if (isPlaying) powerChord(164.81, 207.65, 0.8);  // E5
-            }, 3000);
-            
-            setTimeout(guitarLoop, 4000);
-        }
-        
-        guitarLoop();
-    }
-    
-    // Запускаем все инструменты
-    playDrums();
-    playBass();
-    playGuitar();
-}
-
 // Функция для остановки музыки
 function stopMusic() {
     if (currentOscillators.length > 0) {
@@ -425,6 +283,11 @@ function stopMusic() {
     if (currentGain) {
         currentGain.disconnect();
         currentGain = null;
+    }
+    
+    if (trackTimeoutId) {
+        clearTimeout(trackTimeoutId);
+        trackTimeoutId = null;
     }
 }
 
@@ -449,6 +312,126 @@ function stopVisualizer() {
     }
 }
 
+// Создание панк-рок трека (Green Day style)
+function createPunkTrack(track) {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    
+    const masterGain = audioContext.createGain();
+    masterGain.connect(audioContext.destination);
+    masterGain.gain.value = track.tempo > 150 ? 0.6 : 0.5;
+    currentGain = masterGain;
+    
+    // Быстрые панк барабаны
+    function playPunkDrums() {
+        const drumGain = audioContext.createGain();
+        drumGain.connect(masterGain);
+        drumGain.gain.value = 0.4;
+        
+        function drumBeat() {
+            if (!isPlaying) return;
+            
+            // Быстрый кик
+            const kick = audioContext.createOscillator();
+            const kickGain = audioContext.createGain();
+            kick.connect(kickGain);
+            kickGain.connect(drumGain);
+            
+            kick.frequency.value = 80;
+            kick.type = 'sine';
+            kickGain.gain.setValueAtTime(0.8, audioContext.currentTime);
+            kickGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+            
+            kick.start();
+            kick.stop(audioContext.currentTime + 0.2);
+            currentOscillators.push(kick);
+            
+            // Снейр на 2 и 4
+            setTimeout(() => {
+                if (!isPlaying) return;
+                const snare = audioContext.createOscillator();
+                const snareGain = audioContext.createGain();
+                snare.connect(snareGain);
+                snareGain.connect(drumGain);
+                
+                snare.frequency.value = 250;
+                snare.type = 'square';
+                snareGain.gain.setValueAtTime(0.6, audioContext.currentTime);
+                snareGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+                
+                snare.start();
+                snare.stop(audioContext.currentTime + 0.15);
+                currentOscillators.push(snare);
+            }, track.tempo > 150 ? 300 : 500);
+            
+            setTimeout(drumBeat, track.tempo > 150 ? 600 : 1000);
+        }
+        
+        drumBeat();
+    }
+    
+    // Панк гитара с power chords
+    function playPunkGuitar() {
+        const guitarGain = audioContext.createGain();
+        guitarGain.connect(masterGain);
+        guitarGain.gain.value = 0.3;
+        
+        function punkRiff() {
+            if (!isPlaying) return;
+            
+            const powerChords = [
+                [164.81, 329.63], // E5
+                [185.00, 369.99], // F#5
+                [196.00, 392.00], // G5
+                [146.83, 293.66]  // D5
+            ];
+            
+            powerChords.forEach((chord, index) => {
+                setTimeout(() => {
+                    if (!isPlaying) return;
+                    
+                    chord.forEach(freq => {
+                        const osc = audioContext.createOscillator();
+                        const gain = audioContext.createGain();
+                        const distortion = audioContext.createWaveShaper();
+                        
+                        // Панк дисторшн
+                        const samples = 22050;
+                        const curve = new Float32Array(samples);
+                        for (let i = 0; i < samples; i++) {
+                            const x = (i * 2) / samples - 1;
+                            curve[i] = Math.sign(x) * Math.pow(Math.abs(x), 0.3);
+                        }
+                        distortion.curve = curve;
+                        
+                        osc.connect(distortion);
+                        distortion.connect(gain);
+                        gain.connect(guitarGain);
+                        
+                        osc.frequency.value = freq;
+                        osc.type = 'square';
+                        
+                        gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.8);
+                        
+                        osc.start();
+                        osc.stop(audioContext.currentTime + 0.8);
+                        currentOscillators.push(osc);
+                    });
+                }, index * (track.tempo > 150 ? 400 : 600));
+            });
+            
+            setTimeout(punkRiff, track.tempo > 150 ? 1600 : 2400);
+        }
+        
+        punkRiff();
+    }
+    
+    playPunkDrums();
+    playPunkGuitar();
+}
+
 // Создание гранж-трека (Nirvana style)
 function createGrungeTrack(track) {
     if (!audioContext) {
@@ -469,40 +452,54 @@ function createGrungeTrack(track) {
         function drumBeat() {
             if (!isPlaying) return;
             
-            // Кик
+            // Мощный кик
             const kick = audioContext.createOscillator();
             const kickGain = audioContext.createGain();
             kick.connect(kickGain);
             kickGain.connect(drumGain);
             
-            kick.frequency.value = 60;
+            kick.frequency.value = 50;
             kick.type = 'sine';
-            kickGain.gain.setValueAtTime(0.8, audioContext.currentTime);
-            kickGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            kickGain.gain.setValueAtTime(1.0, audioContext.currentTime);
+            kickGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.6);
             
             kick.start();
-            kick.stop(audioContext.currentTime + 0.5);
+            kick.stop(audioContext.currentTime + 0.6);
             currentOscillators.push(kick);
             
-            // Снейр
+            // Грязный снейр
             setTimeout(() => {
                 if (!isPlaying) return;
                 const snare = audioContext.createOscillator();
                 const snareGain = audioContext.createGain();
+                const noise = audioContext.createBufferSource();
+                
+                // Создаем шум для гранжевого снейра
+                const buffer = audioContext.createBuffer(1, audioContext.sampleRate * 0.3, audioContext.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < data.length; i++) {
+                    data[i] = (Math.random() * 2 - 1) * 0.5;
+                }
+                noise.buffer = buffer;
+                
                 snare.connect(snareGain);
+                noise.connect(snareGain);
                 snareGain.connect(drumGain);
                 
-                snare.frequency.value = 200;
+                snare.frequency.value = 180;
                 snare.type = 'square';
-                snareGain.gain.setValueAtTime(0.5, audioContext.currentTime);
-                snareGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                snareGain.gain.setValueAtTime(0.7, audioContext.currentTime);
+                snareGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
                 
                 snare.start();
-                snare.stop(audioContext.currentTime + 0.3);
+                noise.start();
+                snare.stop(audioContext.currentTime + 0.4);
+                noise.stop(audioContext.currentTime + 0.4);
+                
                 currentOscillators.push(snare);
-            }, 1000);
+            }, 1200);
             
-            setTimeout(drumBeat, 2000);
+            setTimeout(drumBeat, 2400);
         }
         
         drumBeat();
@@ -512,41 +509,59 @@ function createGrungeTrack(track) {
     function playGrungeGuitar() {
         const guitarGain = audioContext.createGain();
         guitarGain.connect(masterGain);
-        guitarGain.gain.value = 0.3;
+        guitarGain.gain.value = 0.35;
         
         function grungeRiff() {
             if (!isPlaying) return;
             
-            const frequencies = [82.41, 110.00, 146.83, 196.00]; // E2, A2, D3, G3
+            const grungeChords = [
+                [110.00, 164.81], // A3, E4
+                [123.47, 185.00], // B3, F#4
+                [146.83, 220.00], // D4, A4
+                [98.00, 146.83]   // G3, D4
+            ];
             
-            frequencies.forEach((freq, index) => {
+            grungeChords.forEach((chord, index) => {
                 setTimeout(() => {
                     if (!isPlaying) return;
                     
-                    const osc = audioContext.createOscillator();
-                    const gain = audioContext.createGain();
-                    const filter = audioContext.createBiquadFilter();
-                    
-                    osc.connect(filter);
-                    filter.connect(gain);
-                    gain.connect(guitarGain);
-                    
-                    osc.frequency.value = freq;
-                    osc.type = 'sawtooth';
-                    filter.type = 'lowpass';
-                    filter.frequency.value = 1500;
-                    filter.Q.value = 15;
-                    
-                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
-                    
-                    osc.start();
-                    osc.stop(audioContext.currentTime + 1.5);
-                    currentOscillators.push(osc);
-                }, index * 500);
+                    chord.forEach(freq => {
+                        const osc = audioContext.createOscillator();
+                        const gain = audioContext.createGain();
+                        const filter = audioContext.createBiquadFilter();
+                        const distortion = audioContext.createWaveShaper();
+                        
+                        // Гранжевая дисторшн
+                        const samples = 22050;
+                        const curve = new Float32Array(samples);
+                        for (let i = 0; i < samples; i++) {
+                            const x = (i * 2) / samples - 1;
+                            curve[i] = Math.sign(x) * (1 - Math.exp(-Math.abs(x) * 3));
+                        }
+                        distortion.curve = curve;
+                        
+                        osc.connect(distortion);
+                        distortion.connect(filter);
+                        filter.connect(gain);
+                        gain.connect(guitarGain);
+                        
+                        osc.frequency.value = freq;
+                        osc.type = 'sawtooth';
+                        filter.type = 'lowpass';
+                        filter.frequency.value = 1200;
+                        filter.Q.value = 8;
+                        
+                        gain.gain.setValueAtTime(0.25, audioContext.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.8);
+                        
+                        osc.start();
+                        osc.stop(audioContext.currentTime + 1.8);
+                        currentOscillators.push(osc);
+                    });
+                }, index * 800);
             });
             
-            setTimeout(grungeRiff, 4000);
+            setTimeout(grungeRiff, 3200);
         }
         
         grungeRiff();
@@ -567,7 +582,7 @@ function createAlternativeTrack(track) {
     masterGain.gain.value = 0.7;
     currentGain = masterGain;
     
-    // Альтернативные барабаны
+    // Тяжелые альтернативные барабаны
     function playAltDrums() {
         const drumGain = audioContext.createGain();
         drumGain.connect(masterGain);
@@ -576,40 +591,40 @@ function createAlternativeTrack(track) {
         function drumPattern() {
             if (!isPlaying) return;
             
-            // Мощный кик
+            // Двойной кик
             const kick = audioContext.createOscillator();
             const kickGain = audioContext.createGain();
             kick.connect(kickGain);
             kickGain.connect(drumGain);
             
-            kick.frequency.value = 50;
+            kick.frequency.value = 45;
             kick.type = 'sine';
-            kickGain.gain.setValueAtTime(1.0, audioContext.currentTime);
-            kickGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+            kickGain.gain.setValueAtTime(1.2, audioContext.currentTime);
+            kickGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
             
             kick.start();
-            kick.stop(audioContext.currentTime + 0.4);
+            kick.stop(audioContext.currentTime + 0.5);
             currentOscillators.push(kick);
             
-            // Хай-хет
+            // Мощный снейр
             setTimeout(() => {
                 if (!isPlaying) return;
-                const hihat = audioContext.createOscillator();
-                const hihatGain = audioContext.createGain();
-                hihat.connect(hihatGain);
-                hihatGain.connect(drumGain);
+                const snare = audioContext.createOscillator();
+                const snareGain = audioContext.createGain();
+                snare.connect(snareGain);
+                snareGain.connect(drumGain);
                 
-                hihat.frequency.value = 10000;
-                hihat.type = 'square';
-                hihatGain.gain.setValueAtTime(0.2, audioContext.currentTime);
-                hihatGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                snare.frequency.value = 200;
+                snare.type = 'square';
+                snareGain.gain.setValueAtTime(0.9, audioContext.currentTime);
+                snareGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
                 
-                hihat.start();
-                hihat.stop(audioContext.currentTime + 0.1);
-                currentOscillators.push(hihat);
-            }, 500);
+                snare.start();
+                snare.stop(audioContext.currentTime + 0.3);
+                currentOscillators.push(snare);
+            }, 600);
             
-            setTimeout(drumPattern, 1000);
+            setTimeout(drumPattern, 1200);
         }
         
         drumPattern();
@@ -624,14 +639,14 @@ function createAlternativeTrack(track) {
         function heavyRiff() {
             if (!isPlaying) return;
             
-            const powerChords = [
-                [82.41, 164.81], // E
-                [87.31, 174.61], // F
-                [98.00, 196.00], // G
-                [110.00, 220.00] // A
+            const altChords = [
+                [82.41, 164.81, 329.63], // E power chord
+                [87.31, 174.61, 349.23], // F power chord
+                [98.00, 196.00, 392.00], // G power chord
+                [73.42, 146.83, 293.66]  // D power chord
             ];
             
-            powerChords.forEach((chord, index) => {
+            altChords.forEach((chord, index) => {
                 setTimeout(() => {
                     if (!isPlaying) return;
                     
@@ -639,34 +654,39 @@ function createAlternativeTrack(track) {
                         const osc = audioContext.createOscillator();
                         const gain = audioContext.createGain();
                         const distortion = audioContext.createWaveShaper();
+                        const filter = audioContext.createBiquadFilter();
                         
-                        // Тяжелая дисторшн
+                        // Тяжелая альтернативная дисторшн
                         const samples = 22050;
                         const curve = new Float32Array(samples);
                         for (let i = 0; i < samples; i++) {
                             const x = (i * 2) / samples - 1;
-                            curve[i] = Math.sign(x) * Math.pow(Math.abs(x), 0.4);
+                            curve[i] = Math.sign(x) * Math.pow(Math.abs(x), 0.2);
                         }
                         distortion.curve = curve;
                         
                         osc.connect(distortion);
-                        distortion.connect(gain);
+                        distortion.connect(filter);
+                        filter.connect(gain);
                         gain.connect(guitarGain);
                         
                         osc.frequency.value = freq;
                         osc.type = 'square';
+                        filter.type = 'lowpass';
+                        filter.frequency.value = 2000;
+                        filter.Q.value = 5;
                         
-                        gain.gain.setValueAtTime(0.3, audioContext.currentTime);
-                        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.0);
+                        gain.gain.setValueAtTime(0.15, audioContext.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.2);
                         
                         osc.start();
-                        osc.stop(audioContext.currentTime + 1.0);
+                        osc.stop(audioContext.currentTime + 1.2);
                         currentOscillators.push(osc);
                     });
-                }, index * 800);
+                }, index * 1000);
             });
             
-            setTimeout(heavyRiff, 3200);
+            setTimeout(heavyRiff, 4000);
         }
         
         heavyRiff();
@@ -696,48 +716,42 @@ function createHardcoreTrack(track) {
         function brutalBeats() {
             if (!isPlaying) return;
             
-            // Двойной кик
-            for (let i = 0; i < 2; i++) {
+            // Blast beats - очень быстрые удары
+            for (let i = 0; i < 4; i++) {
                 setTimeout(() => {
                     if (!isPlaying) return;
+                    
+                    // Двойной кик
                     const kick = audioContext.createOscillator();
                     const kickGain = audioContext.createGain();
                     kick.connect(kickGain);
                     kickGain.connect(drumGain);
                     
-                    kick.frequency.value = 40;
+                    kick.frequency.value = 35;
                     kick.type = 'sine';
-                    kickGain.gain.setValueAtTime(1.2, audioContext.currentTime);
-                    kickGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                    kickGain.gain.setValueAtTime(1.5, audioContext.currentTime);
+                    kickGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
                     
                     kick.start();
-                    kick.stop(audioContext.currentTime + 0.2);
+                    kick.stop(audioContext.currentTime + 0.15);
                     currentOscillators.push(kick);
-                }, i * 200);
+                    
+                    // Быстрый снейр
+                    const snare = audioContext.createOscillator();
+                    const snareGain = audioContext.createGain();
+                    snare.connect(snareGain);
+                    snareGain.connect(drumGain);
+                    
+                    snare.frequency.value = 300;
+                    snare.type = 'square';
+                    snareGain.gain.setValueAtTime(1.0, audioContext.currentTime);
+                    snareGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.08);
+                    
+                    snare.start();
+                    snare.stop(audioContext.currentTime + 0.08);
+                    currentOscillators.push(snare);
+                }, i * 150);
             }
-            
-            // Blast beat snare
-            setTimeout(() => {
-                if (!isPlaying) return;
-                for (let i = 0; i < 4; i++) {
-                    setTimeout(() => {
-                        if (!isPlaying) return;
-                        const snare = audioContext.createOscillator();
-                        const snareGain = audioContext.createGain();
-                        snare.connect(snareGain);
-                        snareGain.connect(drumGain);
-                        
-                        snare.frequency.value = 250;
-                        snare.type = 'square';
-                        snareGain.gain.setValueAtTime(0.8, audioContext.currentTime);
-                        snareGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-                        
-                        snare.start();
-                        snare.stop(audioContext.currentTime + 0.1);
-                        currentOscillators.push(snare);
-                    }, i * 100);
-                }
-            }, 400);
             
             setTimeout(brutalBeats, 800);
         }
@@ -745,7 +759,7 @@ function createHardcoreTrack(track) {
         brutalBeats();
     }
     
-    // Хардкор гитара с экстремальным звуком
+    // Экстремальная хардкор гитара
     function playHardcoreGuitar() {
         const guitarGain = audioContext.createGain();
         guitarGain.connect(masterGain);
@@ -754,47 +768,51 @@ function createHardcoreTrack(track) {
         function extremeRiff() {
             if (!isPlaying) return;
             
-            const brutalsounds = [65.41, 73.42, 82.41, 98.00]; // Low tuning
+            // Низкие частоты для брутального звука
+            const brutalFreqs = [55.00, 61.74, 65.41, 73.42]; // Down-tuned
             
-            brutalsounds.forEach((freq, index) => {
+            brutalFreqs.forEach((freq, index) => {
                 setTimeout(() => {
                     if (!isPlaying) return;
                     
-                    const osc = audioContext.createOscillator();
-                    const gain = audioContext.createGain();
-                    const distortion = audioContext.createWaveShaper();
-                    const filter = audioContext.createBiquadFilter();
-                    
-                    // Экстремальная дисторшн
-                    const samples = 22050;
-                    const curve = new Float32Array(samples);
-                    for (let i = 0; i < samples; i++) {
-                        const x = (i * 2) / samples - 1;
-                        curve[i] = Math.sign(x) * (1 - Math.exp(-Math.abs(x) * 5));
+                    // Создаем несколько осцилляторов для толщины звука
+                    for (let oct = 0; oct < 3; oct++) {
+                        const osc = audioContext.createOscillator();
+                        const gain = audioContext.createGain();
+                        const distortion = audioContext.createWaveShaper();
+                        const filter = audioContext.createBiquadFilter();
+                        
+                        // Экстремальная дисторшн
+                        const samples = 22050;
+                        const curve = new Float32Array(samples);
+                        for (let i = 0; i < samples; i++) {
+                            const x = (i * 2) / samples - 1;
+                            curve[i] = Math.sign(x) * (1 - Math.exp(-Math.abs(x) * 8));
+                        }
+                        distortion.curve = curve;
+                        
+                        osc.connect(distortion);
+                        distortion.connect(filter);
+                        filter.connect(gain);
+                        gain.connect(guitarGain);
+                        
+                        osc.frequency.value = freq * Math.pow(2, oct);
+                        osc.type = 'sawtooth';
+                        filter.type = 'lowpass';
+                        filter.frequency.value = 600;
+                        filter.Q.value = 25;
+                        
+                        gain.gain.setValueAtTime(0.1, audioContext.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+                        
+                        osc.start();
+                        osc.stop(audioContext.currentTime + 0.4);
+                        currentOscillators.push(osc);
                     }
-                    distortion.curve = curve;
-                    
-                    osc.connect(distortion);
-                    distortion.connect(filter);
-                    filter.connect(gain);
-                    gain.connect(guitarGain);
-                    
-                    osc.frequency.value = freq;
-                    osc.type = 'sawtooth';
-                    filter.type = 'lowpass';
-                    filter.frequency.value = 800;
-                    filter.Q.value = 20;
-                    
-                    gain.gain.setValueAtTime(0.4, audioContext.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.6);
-                    
-                    osc.start();
-                    osc.stop(audioContext.currentTime + 0.6);
-                    currentOscillators.push(osc);
                 }, index * 200);
             });
             
-            setTimeout(extremeRiff, 1600);
+            setTimeout(extremeRiff, 1000);
         }
         
         extremeRiff();
@@ -807,82 +825,95 @@ function createHardcoreTrack(track) {
 // Инициализация музыки при загрузке страницы
 function initMusic() {
     const musicBtn = document.getElementById('musicToggle');
-    const musicIcon = document.getElementById('musicIcon');
-    const musicText = document.getElementById('musicText');
     
-    try {
-        // Проверяем поддержку Web Audio API
-        if (window.AudioContext || window.webkitAudioContext) {
-            console.log('Web Audio API поддерживается');
-            
-            // Автоматический запуск музыки (может быть заблокирован браузером)
-            setTimeout(() => {
-                                 if (!isPlaying) {
-                     isPlaying = true;
-                     playCurrentTrack(); // Changed from createPunkTrack to playCurrentTrack
-                     musicIcon.textContent = '🔊';
-                     musicText.textContent = `♪ ${musicPlaylist[currentTrackIndex].artist}`; // Changed from 'МУЗЫКА ВКЛ' to current track info
-                     musicBtn.classList.remove('muted');
-                     musicBtn.classList.add('playing');
-                     
-                     // Показываем визуализатор
-                     startVisualizer();
-                 }
-            }, 1000);
-            
-        } else {
-            throw new Error('Web Audio API не поддерживается');
-        }
-    } catch (error) {
-        console.log('Ошибка инициализации аудио:', error);
-        musicBtn.classList.add('muted');
-        musicIcon.textContent = '🔇';
-        musicText.textContent = 'МУЗЫКА НЕДОСТУПНА';
-        musicBtn.disabled = true;
+    // Автозапуск музыки через 2 секунды после загрузки
+    if (musicBtn) {
+        setTimeout(() => {
+            // Проверяем, может ли браузер воспроизводить аудио без взаимодействия
+            if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+                try {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    if (audioContext.state === 'suspended') {
+                        // Ждем первого клика пользователя для запуска
+                        document.addEventListener('click', () => {
+                            if (!isPlaying) {
+                                setTimeout(() => {
+                                    if (!isPlaying) {
+                                        isPlaying = true;
+                                        playCurrentTrack();
+                                        const musicIcon = document.getElementById('musicIcon');
+                                        const musicText = document.getElementById('musicText');
+                                        
+                                        if (musicIcon && musicText) {
+                                            musicIcon.textContent = '🔊';
+                                            musicText.textContent = `♪ ${musicPlaylist[currentTrackIndex].artist}`;
+                                            musicBtn.classList.remove('muted');
+                                            musicBtn.classList.add('playing');
+                                        }
+                                        
+                                        startVisualizer();
+                                    }
+                                }, 1000);
+                            }
+                        }, { once: true });
+                    }
+                } catch (error) {
+                    console.log('Web Audio API не поддерживается');
+                }
+            }
+        }, 2000);
     }
 }
 
-// Добавляем эффекты при загрузке страницы
+// Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
-    // Инициализация музыки
+    // Добавляем анимацию загрузки
+    document.body.classList.add('loading');
+    
+    // Инициализируем музыку
     initMusic();
     
-    // Анимация появления карточек
-    const cards = document.querySelectorAll('.image-card');
-    cards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(50px)';
-        
-        setTimeout(() => {
-            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-        }, index * 200);
+    // Показываем информацию о плейлисте
+    console.log('🎸 Сайт АскНН загружен!');
+    console.log('🎵 Плейлист содержит треки:');
+    musicPlaylist.forEach((track, index) => {
+        console.log(`${index + 1}. ${track.artist} - ${track.title} (${track.genre})`);
     });
-
-    // Анимация появления кнопок
+    
+    // Добавляем обработчики событий для кнопок
     const buttons = document.querySelectorAll('.action-btn');
-    buttons.forEach((button, index) => {
-        button.style.opacity = '0';
-        button.style.transform = 'scale(0.8)';
-        
-        setTimeout(() => {
-            button.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            button.style.opacity = '1';
-            button.style.transform = 'scale(1)';
-        }, 1000 + index * 150);
-    });
-
-    // Добавляем звуковые эффекты при наведении на кнопки
     buttons.forEach(button => {
-        button.addEventListener('mouseenter', function() {
-            // Можно добавить звуковой эффект здесь, если нужно
-            this.style.transform = 'translateY(-5px) scale(1.05)';
+        button.addEventListener('mouseover', () => {
+            button.style.transform = 'translateY(-5px) scale(1.02)';
         });
-
-        button.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
+        
+        button.addEventListener('mouseout', () => {
+            button.style.transform = 'translateY(0) scale(1)';
         });
+    });
+    
+    // Плавное появление элементов при скролле
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // Наблюдаем за элементами галереи
+    const galleryItems = document.querySelectorAll('.image-card, .action-btn');
+    galleryItems.forEach(item => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(30px)';
+        item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(item);
     });
 });
 
