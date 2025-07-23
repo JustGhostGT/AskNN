@@ -3,142 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Скачать файлы АскНН</title>
+    <title>Скачать АскНН - Файлы сайта</title>
     <style>
-        body { 
-            font-family: Arial, sans-serif; 
-            max-width: 800px; 
-            margin: 50px auto; 
-            padding: 20px; 
-            background: #1a1a1a; 
-            color: #fff; 
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
         }
-        .download-card { 
-            background: #2a2a2a; 
-            padding: 20px; 
-            margin: 15px 0; 
-            border-radius: 10px; 
-            border: 2px solid #ff6b35;
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
-        .download-btn { 
-            display: inline-block; 
-            padding: 12px 24px; 
-            background: #ff6b35; 
-            color: white; 
-            text-decoration: none; 
-            border-radius: 5px; 
-            margin: 5px;
+        h1 {
+            color: #ff6b35;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+        }
+        .section {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid #ff6b35;
+        }
+        .section h2 {
+            color: #ff6b35;
+            margin-bottom: 15px;
+        }
+        .download-link {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 8px;
             font-weight: bold;
-        }
-        .download-btn:hover { 
-            background: #ff8c42; 
-            transform: translateY(-2px);
             transition: all 0.3s ease;
         }
-        h1 { 
-            color: #ff6b35; 
-            text-align: center; 
+        .download-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
         }
-        h2 { 
-            color: #ff8c42; 
+        .new-badge {
+            background: #ff0000;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            margin-left: 8px;
         }
-        .file-info {
-            background: #333; 
-            padding: 10px; 
-            border-radius: 5px; 
-            font-family: monospace;
-            margin: 10px 0;
+        .description {
+            color: #cccccc;
+            font-style: italic;
+            margin-top: 10px;
         }
-        .recommended {
-            border-color: #32cd32;
-            box-shadow: 0 0 10px rgba(50, 205, 50, 0.3);
+        .highlight {
+            background: rgba(255, 107, 53, 0.2);
+            border: 2px solid #ff6b35;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
         }
-        .recommended h2 {
-            color: #32cd32;
+        .music-note {
+            color: #ff6b35;
+            font-size: 1.2em;
         }
     </style>
 </head>
 <body>
-    <h1>📦 Скачать сайт АскНН</h1>
-    
-    <div class="download-card recommended">
-        <h2>🎯 РЕКОМЕНДУЕМЫЙ (Полный пакет)</h2>
-        <p><strong>Содержит:</strong> Все файлы + netlify.toml + vercel.json + конфигурации</p>
-        <div class="file-info">asknn-website-complete.zip (12.8 KB)</div>
-        <a href="asknn-website-complete.zip" class="download-btn" download>📥 Скачать Complete</a>
-        <a href="asknn-netlify-fixed.zip" class="download-btn" download>📥 Скачать Netlify Fixed</a>
+    <div class="container">
+        <h1>🎸 Скачать АскНН - Файлы сайта</h1>
+        
+        <div class="highlight">
+            <h2><span class="music-note">🎵</span> НОВЫЙ РАБОЧИЙ САЙТ С МУЗЫКОЙ! <span class="new-badge">НОВОЕ</span></h2>
+            <p>Полностью рабочая версия с музыкальным плейлистом от всех групп!</p>
+            <a href="http://localhost:8001/asknn-new-music.html" class="download-link">🎸 ОТКРЫТЬ НОВЫЙ САЙТ</a>
+            <a href="http://localhost:8000/asknn-working-music.zip" class="download-link">📦 СКАЧАТЬ АРХИВ</a>
+            <div class="description">
+                ✅ Three Days Grace, Nirvana, Green Day, XDEBUSTERVANDAMX, BEATDOWNHEROES<br>
+                ✅ 18 треков с уникальными звуками<br>
+                ✅ Работает на всех браузерах<br>
+                ✅ Визуализатор музыки
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📦 Полные архивы сайта</h2>
+            <a href="http://localhost:8000/asknn-website-complete.zip" class="download-link">📁 Полный архив</a>
+            <a href="http://localhost:8000/asknn-website-final-updated.zip" class="download-link">🎵 С обновленной музыкой</a>
+            <a href="http://localhost:8000/asknn-website-music-updated.zip" class="download-link">🎸 Музыкальное обновление</a>
+            <a href="http://localhost:8000/asknn-netlify-fixed.zip" class="download-link">🌐 Для Netlify</a>
+            <div class="description">
+                Содержат все файлы: HTML, CSS, JS, конфигурацию для хостинга
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📄 Отдельные файлы</h2>
+            <a href="http://localhost:8000/index.html" class="download-link">📄 index.html</a>
+            <a href="http://localhost:8000/asknn-new-music.html" class="download-link">🎵 asknn-new-music.html <span class="new-badge">НОВОЕ</span></a>
+            <a href="http://localhost:8000/styles.css" class="download-link">🎨 styles.css</a>
+            <a href="http://localhost:8000/script.js" class="download-link">⚡ script.js</a>
+            <div class="description">
+                Отдельные компоненты сайта для ручной сборки
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>⚙️ Конфигурационные файлы</h2>
+            <a href="http://localhost:8000/netlify.toml" class="download-link">🔧 netlify.toml</a>
+            <a href="http://localhost:8000/vercel.json" class="download-link">⚡ vercel.json</a>
+            <a href="http://localhost:8000/CNAME" class="download-link">🌐 CNAME</a>
+            <a href="http://localhost:8000/README.md" class="download-link">📖 README.md</a>
+            <div class="description">
+                Файлы для настройки различных хостингов
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🎵 Информация о музыке</h2>
+            <p style="color: #ff6b35;"><strong>Плейлист содержит:</strong></p>
+            <ul style="color: #cccccc;">
+                <li>🎸 <strong>Three Days Grace:</strong> I Hate Everything About You, Animal I Have Become, Pain, Break</li>
+                <li>🎵 <strong>Nirvana:</strong> Smells Like Teen Spirit, Come As You Are, Lithium, In Bloom</li>
+                <li>🎶 <strong>Green Day:</strong> Basket Case, Boulevard of Broken Dreams, American Idiot, Holiday</li>
+                <li>🔥 <strong>XDEBUSTERVANDAMX:</strong> HARDCORE DESTRUCTION, UNDERGROUND RIOT, CHAOS MACHINE</li>
+                <li>💪 <strong>BEATDOWNHEROES:</strong> STREET FIGHT, NEVER SURRENDER, WARRIOR SPIRIT</li>
+            </ul>
+            <div class="description">
+                Каждый трек генерируется с уникальным звучанием соответствующего жанра
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🚀 Инструкции по развертыванию</h2>
+            <p style="color: #cccccc;">
+                1. <strong>Netlify Drop:</strong> Просто перетащите любой .zip архив<br>
+                2. <strong>GitHub Pages:</strong> Загрузите файлы в репозиторий<br>
+                3. <strong>Vercel:</strong> Подключите к Git или загрузите архив<br>
+                4. <strong>Локально:</strong> Распакуйте и откройте в браузере
+            </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; color: #888;">
+            <p>© 2024 АскНН - Аскера Нижний Новгород</p>
+            <p style="font-size: 0.9em;">Все архивы готовы к развертыванию</p>
+        </div>
     </div>
-
-    <div class="download-card">
-        <h2>🎵 С обновленной музыкой</h2>
-        <p><strong>Содержит:</strong> Новый плейлист с Three Days Grace, Nirvana, Green Day</p>
-        <div class="file-info">asknn-website-final-updated.zip (12.8 KB)</div>
-        <a href="asknn-website-final-updated.zip" class="download-btn" download>📥 Скачать Updated</a>
-    </div>
-
-    <div class="download-card">
-        <h2>🖼️ С обновленными изображениями</h2>
-        <p><strong>Содержит:</strong> Реальные фото субкультур</p>
-        <div class="file-info">asknn-website-updated.zip (10.2 KB)</div>
-        <a href="asknn-website-updated.zip" class="download-btn" download>📥 Скачать Images</a>
-    </div>
-
-    <div class="download-card">
-        <h2>🎸 Для клуба</h2>
-        <p><strong>Содержит:</strong> Версия для субкультурного клуба</p>
-        <div class="file-info">asknn-club-website.zip (10.2 KB)</div>
-        <a href="asknn-club-website.zip" class="download-btn" download>📥 Скачать Club</a>
-    </div>
-
-    <div class="download-card">
-        <h2>🆓 Для бесплатного хостинга</h2>
-        <p><strong>Содержит:</strong> Оптимизированная версия</p>
-        <div class="file-info">asknn-free-hosting.zip (12.0 KB)</div>
-        <a href="asknn-free-hosting.zip" class="download-btn" download>📥 Скачать Free</a>
-    </div>
-
-    <div class="download-card">
-        <h2>📁 Полный проект</h2>
-        <p><strong>Содержит:</strong> Все файлы и документация</p>
-        <div class="file-info">asknn-full-project.zip (27.5 KB)</div>
-        <a href="asknn-full-project.zip" class="download-btn" download>📥 Скачать Full</a>
-    </div>
-
-    <hr style="border-color: #ff6b35; margin: 30px 0;">
-
-    <div class="download-card">
-        <h2>📝 Отдельные файлы</h2>
-        <p>Если нужны отдельные файлы:</p>
-        <a href="index.html" class="download-btn" download>📄 index.html</a>
-        <a href="styles.css" class="download-btn" download>🎨 styles.css</a>
-        <a href="script.js" class="download-btn" download>⚡ script.js</a>
-        <a href="netlify.toml" class="download-btn" download>🔧 netlify.toml</a>
-        <a href="vercel.json" class="download-btn" download>⚡ vercel.json</a>
-    </div>
-
-    <div class="download-card">
-        <h2>🚀 Инструкция по размещению</h2>
-        <ol>
-            <li>Скачайте <strong>asknn-website-complete.zip</strong></li>
-            <li>Перейдите на <a href="https://app.netlify.com/drop" target="_blank" style="color: #ff8c42;">Netlify Drop</a></li>
-            <li>Перетащите архив в окно браузера</li>
-            <li>Подождите 1-2 минуты</li>
-            <li>Получите ссылку на ваш сайт!</li>
-        </ol>
-    </div>
-
-    <div class="download-card">
-        <h2>💡 Альтернативы</h2>
-        <p><strong>Если скачивание не работает:</strong></p>
-        <ul>
-            <li>🌐 <strong>GitHub Pages:</strong> <a href="https://justghostgt.github.io/AskNN" target="_blank" style="color: #ff8c42;">justghostgt.github.io/AskNN</a></li>
-            <li>⚡ <strong>Vercel:</strong> <a href="https://vercel.com/new" target="_blank" style="color: #ff8c42;">vercel.com/new</a></li>
-            <li>🔗 <strong>GitHub репозиторий:</strong> <a href="https://github.com/JustGhostGT/AskNN" target="_blank" style="color: #ff8c42;">github.com/JustGhostGT/AskNN</a></li>
-        </ul>
-    </div>
-
-    <footer style="text-align: center; margin-top: 40px; color: #888;">
-        <p>🤘 АскНН - Аскера Нижний Новгород 🤘</p>
-    </footer>
 </body>
 </html>
