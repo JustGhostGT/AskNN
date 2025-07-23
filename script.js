@@ -20,6 +20,113 @@ function openDonation() {
     window.open('https://www.donationalerts.com/r/sasavotik', '_blank');
 }
 
+// Плейлист с треками известных групп
+const musicPlaylist = [
+    // Three Days Grace
+    { 
+        title: "I Hate Everything About You", 
+        artist: "Three Days Grace",
+        genre: "alternative rock",
+        tempo: 140,
+        style: "aggressive"
+    },
+    { 
+        title: "Animal I Have Become", 
+        artist: "Three Days Grace",
+        genre: "alternative rock",
+        tempo: 135,
+        style: "heavy"
+    },
+    { 
+        title: "Pain", 
+        artist: "Three Days Grace",
+        genre: "alternative rock",
+        tempo: 130,
+        style: "emotional"
+    },
+    // Nirvana
+    { 
+        title: "Smells Like Teen Spirit", 
+        artist: "Nirvana",
+        genre: "grunge",
+        tempo: 117,
+        style: "iconic"
+    },
+    { 
+        title: "Come As You Are", 
+        artist: "Nirvana",
+        genre: "grunge",
+        tempo: 120,
+        style: "melodic"
+    },
+    { 
+        title: "Lithium", 
+        artist: "Nirvana",
+        genre: "grunge",
+        tempo: 125,
+        style: "dynamic"
+    },
+    // Green Day
+    { 
+        title: "Basket Case", 
+        artist: "Green Day",
+        genre: "punk rock",
+        tempo: 165,
+        style: "energetic"
+    },
+    { 
+        title: "Boulevard of Broken Dreams", 
+        artist: "Green Day",
+        genre: "punk rock",
+        tempo: 85,
+        style: "melancholic"
+    },
+    { 
+        title: "American Idiot", 
+        artist: "Green Day",
+        genre: "punk rock",
+        tempo: 185,
+        style: "political"
+    },
+    // XDEBUSTERVANDAMX
+    { 
+        title: "HARDCORE DESTRUCTION", 
+        artist: "XDEBUSTERVANDAMX",
+        genre: "hardcore",
+        tempo: 180,
+        style: "brutal"
+    },
+    { 
+        title: "UNDERGROUND RIOT", 
+        artist: "XDEBUSTERVANDAMX",
+        genre: "hardcore",
+        tempo: 175,
+        style: "underground"
+    },
+    // BEATDOWNHEROES
+    { 
+        title: "STREET FIGHT", 
+        artist: "BEATDOWNHEROES",
+        genre: "hardcore",
+        tempo: 170,
+        style: "aggressive"
+    },
+    { 
+        title: "NEVER SURRENDER", 
+        artist: "BEATDOWNHEROES",
+        genre: "hardcore",
+        tempo: 165,
+        style: "motivational"
+    }
+];
+
+let currentTrackIndex = 0;
+let isPlaying = false;
+let audioContext;
+let currentOscillators = [];
+let currentGain;
+let animationFrameId;
+
 // Функция для управления фоновой музыкой
 function toggleMusic() {
     const musicBtn = document.getElementById('musicToggle');
@@ -39,55 +146,90 @@ function toggleMusic() {
             }
             
             isPlaying = true;
-            createPunkTrack();
+            playCurrentTrack();
             
             musicBtn.classList.remove('muted');
             musicBtn.classList.add('playing');
             musicIcon.textContent = '🔊';
-            musicText.textContent = 'МУЗЫКА ВКЛ';
+            musicText.textContent = `♪ ${musicPlaylist[currentTrackIndex].artist}`;
             musicBtn.title = 'Выключить музыку';
             
             // Показываем визуализатор
-            const visualizer = document.getElementById('musicVisualizer');
-            if (visualizer) {
-                visualizer.classList.add('active');
-            }
+            startVisualizer();
             
-            console.log('Панк музыка включена');
         } catch (error) {
-            console.log('Ошибка включения музыки:', error);
+            console.error('Ошибка при воспроизведении музыки:', error);
             musicIcon.textContent = '🔇';
-            musicText.textContent = 'ОШИБКА АУДИО';
-            musicBtn.classList.add('muted');
+            musicText.textContent = 'ОШИБКА ЗВУКА';
         }
     } else {
         // Выключаем музыку
+        stopMusic();
         isPlaying = false;
         
-        if (audioContext) {
-            audioContext.suspend();
-        }
-        
-        musicBtn.classList.add('muted');
         musicBtn.classList.remove('playing');
+        musicBtn.classList.add('muted');
         musicIcon.textContent = '🔇';
         musicText.textContent = 'МУЗЫКА ВЫКЛ';
         musicBtn.title = 'Включить музыку';
         
-        // Скрываем визуализатор
-        const visualizer = document.getElementById('musicVisualizer');
-        if (visualizer) {
-            visualizer.classList.remove('active');
-        }
-        
-        console.log('Панк музыка выключена');
+        stopVisualizer();
     }
 }
 
-// Переменные для Web Audio API
-let audioContext = null;
-let punkTrackSource = null;
-let isPlaying = false;
+// Функция для воспроизведения текущего трека
+function playCurrentTrack() {
+    stopMusic(); // Останавливаем предыдущий трек
+    
+    const track = musicPlaylist[currentTrackIndex];
+    
+    // Создаем музыку на основе характеристик трека
+    switch(track.genre) {
+        case 'grunge':
+            createGrungeTrack(track);
+            break;
+        case 'punk rock':
+            createPunkTrack(track);
+            break;
+        case 'alternative rock':
+            createAlternativeTrack(track);
+            break;
+        case 'hardcore':
+            createHardcoreTrack(track);
+            break;
+        default:
+            createPunkTrack(track);
+    }
+    
+    // Обновляем информацию о треке
+    updateTrackInfo(track);
+    
+    // Автоматически переключаем на следующий трек через 30 секунд
+    setTimeout(() => {
+        if (isPlaying) {
+            nextTrack();
+        }
+    }, 30000);
+}
+
+// Функция для перехода к следующему треку
+function nextTrack() {
+    currentTrackIndex = (currentTrackIndex + 1) % musicPlaylist.length;
+    if (isPlaying) {
+        playCurrentTrack();
+    }
+}
+
+// Функция для обновления информации о треке
+function updateTrackInfo(track) {
+    const musicText = document.getElementById('musicText');
+    if (musicText) {
+        musicText.textContent = `♪ ${track.artist} - ${track.title}`;
+    }
+    
+    // Добавляем информацию о треке в консоль
+    console.log(`🎵 Сейчас играет: ${track.artist} - ${track.title} (${track.genre})`);
+}
 
 // Создание панк-рок трека с помощью Web Audio API
 function createPunkTrack() {
@@ -267,6 +409,401 @@ function createPunkTrack() {
     playGuitar();
 }
 
+// Функция для остановки музыки
+function stopMusic() {
+    if (currentOscillators.length > 0) {
+        currentOscillators.forEach(osc => {
+            try {
+                osc.stop();
+            } catch (e) {
+                // Игнорируем ошибки остановки
+            }
+        });
+        currentOscillators = [];
+    }
+    
+    if (currentGain) {
+        currentGain.disconnect();
+        currentGain = null;
+    }
+}
+
+// Функция для запуска визуализатора
+function startVisualizer() {
+    const visualizer = document.getElementById('musicVisualizer');
+    if (visualizer) {
+        visualizer.classList.add('active');
+    }
+}
+
+// Функция для остановки визуализатора
+function stopVisualizer() {
+    const visualizer = document.getElementById('musicVisualizer');
+    if (visualizer) {
+        visualizer.classList.remove('active');
+    }
+    
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+    }
+}
+
+// Создание гранж-трека (Nirvana style)
+function createGrungeTrack(track) {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    
+    const masterGain = audioContext.createGain();
+    masterGain.connect(audioContext.destination);
+    masterGain.gain.value = 0.6;
+    currentGain = masterGain;
+    
+    // Гранж-барабаны (медленнее и грязнее)
+    function playGrungeDrums() {
+        const drumGain = audioContext.createGain();
+        drumGain.connect(masterGain);
+        drumGain.gain.value = 0.4;
+        
+        function drumBeat() {
+            if (!isPlaying) return;
+            
+            // Кик
+            const kick = audioContext.createOscillator();
+            const kickGain = audioContext.createGain();
+            kick.connect(kickGain);
+            kickGain.connect(drumGain);
+            
+            kick.frequency.value = 60;
+            kick.type = 'sine';
+            kickGain.gain.setValueAtTime(0.8, audioContext.currentTime);
+            kickGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            kick.start();
+            kick.stop(audioContext.currentTime + 0.5);
+            currentOscillators.push(kick);
+            
+            // Снейр
+            setTimeout(() => {
+                if (!isPlaying) return;
+                const snare = audioContext.createOscillator();
+                const snareGain = audioContext.createGain();
+                snare.connect(snareGain);
+                snareGain.connect(drumGain);
+                
+                snare.frequency.value = 200;
+                snare.type = 'square';
+                snareGain.gain.setValueAtTime(0.5, audioContext.currentTime);
+                snareGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                
+                snare.start();
+                snare.stop(audioContext.currentTime + 0.3);
+                currentOscillators.push(snare);
+            }, 1000);
+            
+            setTimeout(drumBeat, 2000);
+        }
+        
+        drumBeat();
+    }
+    
+    // Гранж-гитара с характерным звуком
+    function playGrungeGuitar() {
+        const guitarGain = audioContext.createGain();
+        guitarGain.connect(masterGain);
+        guitarGain.gain.value = 0.3;
+        
+        function grungeRiff() {
+            if (!isPlaying) return;
+            
+            const frequencies = [82.41, 110.00, 146.83, 196.00]; // E2, A2, D3, G3
+            
+            frequencies.forEach((freq, index) => {
+                setTimeout(() => {
+                    if (!isPlaying) return;
+                    
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    const filter = audioContext.createBiquadFilter();
+                    
+                    osc.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(guitarGain);
+                    
+                    osc.frequency.value = freq;
+                    osc.type = 'sawtooth';
+                    filter.type = 'lowpass';
+                    filter.frequency.value = 1500;
+                    filter.Q.value = 15;
+                    
+                    gain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
+                    
+                    osc.start();
+                    osc.stop(audioContext.currentTime + 1.5);
+                    currentOscillators.push(osc);
+                }, index * 500);
+            });
+            
+            setTimeout(grungeRiff, 4000);
+        }
+        
+        grungeRiff();
+    }
+    
+    playGrungeDrums();
+    playGrungeGuitar();
+}
+
+// Создание альтернативного рок-трека (Three Days Grace style)
+function createAlternativeTrack(track) {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    
+    const masterGain = audioContext.createGain();
+    masterGain.connect(audioContext.destination);
+    masterGain.gain.value = 0.7;
+    currentGain = masterGain;
+    
+    // Альтернативные барабаны
+    function playAltDrums() {
+        const drumGain = audioContext.createGain();
+        drumGain.connect(masterGain);
+        drumGain.gain.value = 0.5;
+        
+        function drumPattern() {
+            if (!isPlaying) return;
+            
+            // Мощный кик
+            const kick = audioContext.createOscillator();
+            const kickGain = audioContext.createGain();
+            kick.connect(kickGain);
+            kickGain.connect(drumGain);
+            
+            kick.frequency.value = 50;
+            kick.type = 'sine';
+            kickGain.gain.setValueAtTime(1.0, audioContext.currentTime);
+            kickGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+            
+            kick.start();
+            kick.stop(audioContext.currentTime + 0.4);
+            currentOscillators.push(kick);
+            
+            // Хай-хет
+            setTimeout(() => {
+                if (!isPlaying) return;
+                const hihat = audioContext.createOscillator();
+                const hihatGain = audioContext.createGain();
+                hihat.connect(hihatGain);
+                hihatGain.connect(drumGain);
+                
+                hihat.frequency.value = 10000;
+                hihat.type = 'square';
+                hihatGain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                hihatGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                
+                hihat.start();
+                hihat.stop(audioContext.currentTime + 0.1);
+                currentOscillators.push(hihat);
+            }, 500);
+            
+            setTimeout(drumPattern, 1000);
+        }
+        
+        drumPattern();
+    }
+    
+    // Тяжелая альтернативная гитара
+    function playAltGuitar() {
+        const guitarGain = audioContext.createGain();
+        guitarGain.connect(masterGain);
+        guitarGain.gain.value = 0.4;
+        
+        function heavyRiff() {
+            if (!isPlaying) return;
+            
+            const powerChords = [
+                [82.41, 164.81], // E
+                [87.31, 174.61], // F
+                [98.00, 196.00], // G
+                [110.00, 220.00] // A
+            ];
+            
+            powerChords.forEach((chord, index) => {
+                setTimeout(() => {
+                    if (!isPlaying) return;
+                    
+                    chord.forEach(freq => {
+                        const osc = audioContext.createOscillator();
+                        const gain = audioContext.createGain();
+                        const distortion = audioContext.createWaveShaper();
+                        
+                        // Тяжелая дисторшн
+                        const samples = 22050;
+                        const curve = new Float32Array(samples);
+                        for (let i = 0; i < samples; i++) {
+                            const x = (i * 2) / samples - 1;
+                            curve[i] = Math.sign(x) * Math.pow(Math.abs(x), 0.4);
+                        }
+                        distortion.curve = curve;
+                        
+                        osc.connect(distortion);
+                        distortion.connect(gain);
+                        gain.connect(guitarGain);
+                        
+                        osc.frequency.value = freq;
+                        osc.type = 'square';
+                        
+                        gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.0);
+                        
+                        osc.start();
+                        osc.stop(audioContext.currentTime + 1.0);
+                        currentOscillators.push(osc);
+                    });
+                }, index * 800);
+            });
+            
+            setTimeout(heavyRiff, 3200);
+        }
+        
+        heavyRiff();
+    }
+    
+    playAltDrums();
+    playAltGuitar();
+}
+
+// Создание хардкор-трека (XDEBUSTERVANDAMX/BEATDOWNHEROES style)
+function createHardcoreTrack(track) {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    
+    const masterGain = audioContext.createGain();
+    masterGain.connect(audioContext.destination);
+    masterGain.gain.value = 0.8;
+    currentGain = masterGain;
+    
+    // Брутальные хардкор барабаны
+    function playHardcoreDrums() {
+        const drumGain = audioContext.createGain();
+        drumGain.connect(masterGain);
+        drumGain.gain.value = 0.6;
+        
+        function brutalBeats() {
+            if (!isPlaying) return;
+            
+            // Двойной кик
+            for (let i = 0; i < 2; i++) {
+                setTimeout(() => {
+                    if (!isPlaying) return;
+                    const kick = audioContext.createOscillator();
+                    const kickGain = audioContext.createGain();
+                    kick.connect(kickGain);
+                    kickGain.connect(drumGain);
+                    
+                    kick.frequency.value = 40;
+                    kick.type = 'sine';
+                    kickGain.gain.setValueAtTime(1.2, audioContext.currentTime);
+                    kickGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                    
+                    kick.start();
+                    kick.stop(audioContext.currentTime + 0.2);
+                    currentOscillators.push(kick);
+                }, i * 200);
+            }
+            
+            // Blast beat snare
+            setTimeout(() => {
+                if (!isPlaying) return;
+                for (let i = 0; i < 4; i++) {
+                    setTimeout(() => {
+                        if (!isPlaying) return;
+                        const snare = audioContext.createOscillator();
+                        const snareGain = audioContext.createGain();
+                        snare.connect(snareGain);
+                        snareGain.connect(drumGain);
+                        
+                        snare.frequency.value = 250;
+                        snare.type = 'square';
+                        snareGain.gain.setValueAtTime(0.8, audioContext.currentTime);
+                        snareGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                        
+                        snare.start();
+                        snare.stop(audioContext.currentTime + 0.1);
+                        currentOscillators.push(snare);
+                    }, i * 100);
+                }
+            }, 400);
+            
+            setTimeout(brutalBeats, 800);
+        }
+        
+        brutalBeats();
+    }
+    
+    // Хардкор гитара с экстремальным звуком
+    function playHardcoreGuitar() {
+        const guitarGain = audioContext.createGain();
+        guitarGain.connect(masterGain);
+        guitarGain.gain.value = 0.5;
+        
+        function extremeRiff() {
+            if (!isPlaying) return;
+            
+            const brutalsounds = [65.41, 73.42, 82.41, 98.00]; // Low tuning
+            
+            brutalsounds.forEach((freq, index) => {
+                setTimeout(() => {
+                    if (!isPlaying) return;
+                    
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    const distortion = audioContext.createWaveShaper();
+                    const filter = audioContext.createBiquadFilter();
+                    
+                    // Экстремальная дисторшн
+                    const samples = 22050;
+                    const curve = new Float32Array(samples);
+                    for (let i = 0; i < samples; i++) {
+                        const x = (i * 2) / samples - 1;
+                        curve[i] = Math.sign(x) * (1 - Math.exp(-Math.abs(x) * 5));
+                    }
+                    distortion.curve = curve;
+                    
+                    osc.connect(distortion);
+                    distortion.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(guitarGain);
+                    
+                    osc.frequency.value = freq;
+                    osc.type = 'sawtooth';
+                    filter.type = 'lowpass';
+                    filter.frequency.value = 800;
+                    filter.Q.value = 20;
+                    
+                    gain.gain.setValueAtTime(0.4, audioContext.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.6);
+                    
+                    osc.start();
+                    osc.stop(audioContext.currentTime + 0.6);
+                    currentOscillators.push(osc);
+                }, index * 200);
+            });
+            
+            setTimeout(extremeRiff, 1600);
+        }
+        
+        extremeRiff();
+    }
+    
+    playHardcoreDrums();
+    playHardcoreGuitar();
+}
+
 // Инициализация музыки при загрузке страницы
 function initMusic() {
     const musicBtn = document.getElementById('musicToggle');
@@ -282,17 +819,14 @@ function initMusic() {
             setTimeout(() => {
                                  if (!isPlaying) {
                      isPlaying = true;
-                     createPunkTrack();
+                     playCurrentTrack(); // Changed from createPunkTrack to playCurrentTrack
                      musicIcon.textContent = '🔊';
-                     musicText.textContent = 'МУЗЫКА ВКЛ';
+                     musicText.textContent = `♪ ${musicPlaylist[currentTrackIndex].artist}`; // Changed from 'МУЗЫКА ВКЛ' to current track info
                      musicBtn.classList.remove('muted');
                      musicBtn.classList.add('playing');
                      
                      // Показываем визуализатор
-                     const visualizer = document.getElementById('musicVisualizer');
-                     if (visualizer) {
-                         visualizer.classList.add('active');
-                     }
+                     startVisualizer();
                  }
             }, 1000);
             
